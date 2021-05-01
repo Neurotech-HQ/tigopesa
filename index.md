@@ -1,37 +1,123 @@
-## Welcome to GitHub Pages
+# [tigopesa](https://kalebu.github.io/tigopesa)
 
-You can use the [editor on GitHub](https://github.com/Kalebu/tigopesa/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Python package to easy the tigopesa api integration
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Getting started
 
-### Markdown
+To get started with Tigopesa, you firstly need to install it as show below;
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```bash
+pip install tigopesa
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Authorization and Configuration
 
-### Jekyll Themes
+Before you begin making transaction with tigopesa module, you firstly need to initialize your tigopesa api credentials *client_id* and *client_secret* you were given.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Kalebu/tigopesa/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Whether are sandbox keys or production keys, all of them are in great use with the tigopesa package
 
-### Support or Contact
+Here how to initialize;
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+```python
+
+        >>> from tigopesa import Tigopesa
+        >>> tigopesa = Tigopesa(
+                    client_secret='xxxx',
+                    client_id ='xxxx'
+                    environment="sandbox"
+                )
+        # OR 
+
+        # You can do this;
+
+        >>> from tigopesa import Tigopesa
+        >>> tigopesa = Tigopesa(environment='production')
+        >>> tigopesa.client_id = 'xxxx'
+        >>> tigopesa.client_secret = "xxxx'
+
+```
+
+Once you initialize your module, you might need still need to configure your module with couple of more information ready to begin making transactions, there are required paramaters and optional parameters while configuring as shown below;
+
+```python
+    # Master mechant (Required parameters)
+
+    account: str
+    pin: str
+    account_id: str
+
+    # Mechant Informations
+
+    mechant_reference: Optional[str] = ''
+    mechant_fee: Optional[str] = '0.0'
+    mechant_currency_code: Optional[str] = ''
+
+    # Other_information
+    language: Optional[str] = 'eng'
+    terminal_id: Optional[str] = ''
+    currency_code: Optional[str] = 'TZS'
+
+    tax: Optional[str] = '0.0'
+    fee: Optional[str] = '0.0'
+
+    exchange_rate: Optional[str] = '1'
+
+    # Callbacks and Redirects
+
+    callback_url: Optional[str] = 'https://kalebujordan.dev/'
+    redirect_url: Optional[str] = 'https://kalebu.github.io/pypesa/'
+
+    # Subscribers default Information
+
+    subscriber_country_code: Optional[str] = '255'
+    subscriber_country: Optional[str] = 'TZA'
+```
+
+As you can see there about 3 required parameters while the rest being optional parameters, so in our example we are going to configure using only 3 required parameters and the rest will just take the default values;
+
+```python
+    >>> from tigopesa import Tigopesa
+    >>> tigopesa.configure(
+                account = '255xxxxx', 
+                pin = 'xxxxx'
+                account_id = 'xxxxxx'
+                .........
+            )
+```
+
+## Authorizing Payments 
+
+Now once we are done with the authentication and the authorization part, we can start making authorizing tigopesa payment, Here an example you would authorize a secure tigopesa payment with tigopesa library;
+
+```python
+>>> response = tigopesa.authorize_payment({
+            "amount": 4999,
+            "first_name": "Kalebu",
+            "last_name": "Gwalugano",
+            "customer_email": "kalebjordan.kj@gmail.com",
+            "mobile": "255757294146",}
+        )
+
+print(response)
+
+# Response output 
+
+{'transactionRefId': 'f9995a1ab5d04235a2aeeef37baad129', 'redirectUrl': 'https://secure.tigo.com/v1/tigo/payment-auth/transactions?auth_code=CgFsXfSZRL&transaction_ref_id=f9995a1ab5d04235a2aeeef37baad129&lang=eng', 'authCode': 'CgFsXfSZRL', 'creationDateTime': 'Sat, 1 May 2021 20:50:34 UTC', 'SessionLife': 600}
+```
+
+## Issues
+
+If you're facing issue with the use of the package, raise an issue and I will be working to fixing it as soon as I can;
+
+## Contributing
+
+Tigopesa has a lot of modules to integrate, it can be overwhelming doing all of them by myself together with other responsibilities so I warmly welcome contributors (code + documentation) to contribute to this package.
+
+## Credits
+
+All the credits to;
+
+- [kalebu](https://kalebu.github.io/)
+- [dbrax](https://github.com/dbrax)
+- [Mtabe](https://github.com/zechtz)
+- future contributors

@@ -1,6 +1,6 @@
-from tigopesa.utils import urls
 import requests
 from typing import List, Dict, Union
+from tigopesa.utils import urls, Config
 
 
 class Tigopesa(object):
@@ -15,6 +15,7 @@ class Tigopesa(object):
         self.__callback_url = callback_url
         self.urls = urls(environment)
         self.enviro_types = ['production', 'sandbox']
+        self.config = None
 
     @property
     def client_id(self) -> str:
@@ -125,7 +126,53 @@ class Tigopesa(object):
 
         self.urls = urls(enviro)
 
+    def configure(self, **params):
+        self.config = Config(**params)
+        return self.config
+
+    def authorize_payment():
+        pass
+
+    def customer_payment_json(self, params: Dict) -> Dict:
+        return {
+            "MasterMerchant": {
+                "account": self.config.mm_account,
+                "pin": self.config.mm_pin,
+                "id": self.config.mm_account_id
+            },
+            "Merchant": {
+                "reference": self.config.mechant_reference,
+                "fee": self.config.mechant_fee,
+                "currencyCode": self.config.currency_code
+            },
+            "Subscriber": {
+                "account": params.get('mobile'),
+                "countryCode": params.get('country_code', self.config.subscriber_country_code),
+                "country": params.get('country', self.config.subscriber_country),
+                "firstName": params.get('first_name'),
+                "lastName": params.get('last_name'),
+                "emailId": params.get('customer_email')
+            },
+            "redirectUri": params.get('redirect_url', self.config.redirect_url),
+            "callbackUri": params.get('callback_url', self.config.callback_url),
+            "language": params.get('language', self.config.language),
+            "terminalId": params.get('terminal_id', self.config.terminal_id),
+            "originPayment": {
+                "amount": params.get('amount'),
+                "currencyCode": params.get('currency_code', self.config.currency_code),
+                "tax": params.get('tax', self.config.tax),
+                "fee": params.get('fee', self.config.fee)
+            },
+            "exchangeRate": params.get('exchange_rate', self.config.exchange_rate),
+            "LocalPayment": {
+                "amount": params.get('amount'),
+                "currencyCode": params.get('currecy_code', self.config.currency_code)
+            },
+            "transactionRefId": self.config.random_reference
+        }
+
     def get_headers(self) -> Dict:
         return {
-
+            'Content-Type': 'application/json',
+            'accessToken': self.access_token
         }

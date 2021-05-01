@@ -1,3 +1,6 @@
+import uuid
+from pydantic import BaseModel
+from typing import Optional, List
 from dataclasses import dataclass
 
 
@@ -16,3 +19,44 @@ class urls(object):
 
         self.token_url = f'{self.base_url}//v1/oauth/generate/accesstoken?grant_type=client_credentials'
         self.authorize_payement_url = f'{self.base_url}//v1/tigo/payment-auth/authorize'
+
+# using Pydantic for verification of data
+
+
+class Config(BaseModel):
+
+    # mm stands for Master mechant
+
+    mm_account: str
+    mm_pin: str
+    mm_account_id: str
+
+    # Mechant Informations
+
+    mechant_reference: Optional[str] = ''
+    mechant_fee: Optional[str] = '0.0'
+    mechant_currency_code: Optional[str] = ''
+
+    # Other_information
+    language: Optional[str] = 'eng'
+    terminal_id: Optional[str] = ''
+    currency_code: Optional[str] = 'TZS'
+
+    tax: Optional[str] = '0.0'
+    fee: Optional[str] = '0.0'
+
+    exchange_rate: Optional[str] = '1'
+
+    # Callbacks and Redirects
+
+    callback_url: Optional[str] = 'https://kalebujordan.dev/'
+    redirect_url: Optional[str] = 'https://kalebu.github.io/pypesa/'
+
+    # Subscribers default Information
+
+    subscriber_country_code: Optional[str] = '255'
+    subscriber_country: Optional[str] = 'TZA'
+
+    @property
+    def random_reference(self) -> str:
+        return str(uuid.uuid4()).replace('-', '')

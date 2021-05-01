@@ -25,11 +25,11 @@ class urls(object):
 
 class Config(BaseModel):
 
-    # mm stands for Master mechant
+    # Master mechant
 
-    mm_account: str
-    mm_pin: str
-    mm_account_id: str
+    account: str
+    pin: str
+    account_id: str
 
     # Mechant Informations
 
@@ -60,3 +60,26 @@ class Config(BaseModel):
     @property
     def random_reference(self) -> str:
         return str(uuid.uuid4()).replace('-', '')
+
+
+class secureCustomerPaymentData(BaseModel):
+    # Required parameters
+
+    amount: str
+    first_name: str
+    last_name: str
+    customer_email: str
+    mobile: str
+
+    # Optional Parameters
+
+    redirect_url: Optional[str]
+    callback_url: Optional[str]
+    country_code: Optional[str]
+    country: Optional[str]
+    language: Optional[str]
+    terminal_id: Optional[str]
+    from_currecy_code: Optional[str]
+    to_currency_code: Optional[str]
+    exchange_rate: Optional[str]
+    exchanged_amount: Optional[str]

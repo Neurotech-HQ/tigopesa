@@ -1,6 +1,9 @@
 import requests
+from functools import wraps
 from typing import List, Dict, Union
-from tigopesa.utils import urls, Config
+from requests.exceptions import ConnectTimeout
+from tigopesa.utils import urls, Config, secureCustomerPaymentData
+from tigopesa.exceptions import AuthenticationError, ConfigurationError
 
 
 class Tigopesa(object):
@@ -130,15 +133,40 @@ class Tigopesa(object):
         self.config = Config(**params)
         return self.config
 
-    def authorize_payment():
-        pass
+    def secured(target_method):
+        @wraps(target_method)
+        def verify_security(self, *args, **kwargs):
+            if not self.client_secret or not self.client_id:
+                raise AuthenticationError
+            if not self.config:
+                raise ConfigurationError
+            return target_method(self, *args, **kwargs)
+        return verify_security
 
-    def customer_payment_json(self, params: Dict) -> Dict:
+    @secured
+    def authorize_payment(self, transaction_query: Dict):
+        verified_params = secureCustomerPaymentData(**transaction_query).dict()
+        verified_params = {key: value for key,
+                           value in verified_params.items() if value}
+        # print(verified_params)
+        r_body = self.__customer_payment_json(verified_params)
+        # print(r_body)
+        try:
+            return requests.post(
+                self.urls.authorize_payement_url,
+                json=r_body,
+                headers=self.headers
+            ).json()
+        except (requests.ConnectionError, ConnectTimeout):
+            raise ConnectionError(
+                "Failed to authorize your payment, check your internet connection")
+
+    def __customer_payment_json(self, params: Dict) -> Dict:
         return {
             "MasterMerchant": {
-                "account": self.config.mm_account,
-                "pin": self.config.mm_pin,
-                "id": self.config.mm_account_id
+                "account": self.config.account,
+                "pin": self.config.pin,
+                "id": self.config.account_id
             },
             "Merchant": {
                 "reference": self.config.mechant_reference,
@@ -165,14 +193,15 @@ class Tigopesa(object):
             },
             "exchangeRate": params.get('exchange_rate', self.config.exchange_rate),
             "LocalPayment": {
-                "amount": params.get('amount'),
+                "amount": params.get('exchanged_amount', params.get("amount")),
                 "currencyCode": params.get('currecy_code', self.config.currency_code)
             },
             "transactionRefId": self.config.random_reference
         }
 
-    def get_headers(self) -> Dict:
+    @property
+    def headers(self) -> Dict:
         return {
             'Content-Type': 'application/json',
-            'accessToken': self.access_token
+            'accessToken': self.access_token.get('accessToken')
         }

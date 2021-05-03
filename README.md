@@ -27,69 +27,69 @@ Here how to initialize;
 
 ```python
 
-        >>> from tigopesa import Tigopesa
-        >>> tigopesa = Tigopesa(
-                    client_secret='xxxx',
-                    client_id ='xxxx'
-                    environment="sandbox"
-                )
-        # OR 
+>>> from tigopesa import Tigopesa
+>>> tigopesa = Tigopesa(
+            client_secret='xxxx',
+            client_id ='xxxx'
+            environment="sandbox"
+        )
+# OR 
 
-        # You can do this;
+# You can do this;
 
-        >>> from tigopesa import Tigopesa
-        >>> tigopesa = Tigopesa(environment='production')
-        >>> tigopesa.client_id = 'xxxx'
-        >>> tigopesa.client_secret = "xxxx'
+>>> from tigopesa import Tigopesa
+>>> tigopesa = Tigopesa(environment='production')
+>>> tigopesa.client_id = 'xxxx'
+>>> tigopesa.client_secret = "xxxx'
 
 ```
 
 Once you initialize your module, you might need still need to configure your module with couple of more information ready to begin making transactions, there are required paramaters and optional parameters while configuring as shown below;
 
 ```python
-    # Master mechant (Required parameters)
+# Master mechant (Required parameters)
 
-    account: str
-    pin: str
-    account_id: str
+account: str
+pin: str
+account_id: str
 
-    # Mechant Informations
+# Mechant Informations
 
-    mechant_reference: Optional[str] = ''
-    mechant_fee: Optional[str] = '0.0'
-    mechant_currency_code: Optional[str] = ''
+mechant_reference: Optional[str] = ''
+mechant_fee: Optional[str] = '0.0'
+mechant_currency_code: Optional[str] = ''
 
-    # Other_information
-    language: Optional[str] = 'eng'
-    terminal_id: Optional[str] = ''
-    currency_code: Optional[str] = 'TZS'
+# Other_information
+language: Optional[str] = 'eng'
+terminal_id: Optional[str] = ''
+currency_code: Optional[str] = 'TZS'
 
-    tax: Optional[str] = '0.0'
-    fee: Optional[str] = '0.0'
+tax: Optional[str] = '0.0'
+fee: Optional[str] = '0.0'
 
-    exchange_rate: Optional[str] = '1'
+exchange_rate: Optional[str] = '1'
 
-    # Callbacks and Redirects
+# Callbacks and Redirects
 
-    callback_url: Optional[str] = 'https://kalebujordan.dev/'
-    redirect_url: Optional[str] = 'https://kalebu.github.io/pypesa/'
+callback_url: Optional[str] = 'https://kalebujordan.dev/'
+redirect_url: Optional[str] = 'https://kalebu.github.io/pypesa/'
 
-    # Subscribers default Information
+# Subscribers default Information
 
-    subscriber_country_code: Optional[str] = '255'
-    subscriber_country: Optional[str] = 'TZA'
+subscriber_country_code: Optional[str] = '255'
+subscriber_country: Optional[str] = 'TZA'
 ```
 
 As you can see there about 3 required parameters while the rest being optional parameters, so in our example we are going to configure using only 3 required parameters and the rest will just take the default values;
 
 ```python
-    >>> from tigopesa import Tigopesa
-    >>> tigopesa.configure(
-                account = '255xxxxx', 
-                pin = 'xxxxx'
-                account_id = 'xxxxxx'
-                .........
-            )
+>>> from tigopesa import Tigopesa
+>>> tigopesa.configure(
+            account = '255xxxxx', 
+            pin = 'xxxxx'
+            account_id = 'xxxxxx'
+            .........
+        )
 ```
 
 ## Authorizing Payments 

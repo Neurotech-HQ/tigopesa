@@ -1,6 +1,13 @@
-# tigopesa
+# [tigopesa](https://kalebu.github.io/tigopesa)
 
 Python package to easy the tigopesa api integration
+
+[![Downloads](https://pepy.tech/badge/tigopesa)](https://pepy.tech/project/tigopesa)
+[![Downloads](https://pepy.tech/badge/tigopesa/month)](https://pepy.tech/project/tigopesa)
+[![Downloads](https://pepy.tech/badge/tigopesa/week)](https://pepy.tech/project/tigopesa)
+
+
+![Become a Patron](pictures/become_a_patron_button.png)
 
 ## Getting started
 

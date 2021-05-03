@@ -1,20 +1,20 @@
-from os import path
+import pathlib
 from setuptools import setup
 
-# read the contents of your description file
+# The directory containing this file
+HERE = pathlib.Path(__file__).parent
 
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'description.md'), encoding='utf-8') as f:
-    long_description = f.read()
+# The text of the README file
+long_description = (HERE / "README.md").read_text()
 
 setup(
     name="tigopesa",
-    version="0.1",
+    version="0.6",
     description="A python wrapper for Tigopesa Payment API",
     long_description=long_description,
     long_description_content_type='text/markdown',
     url="https://github.com/Kalebu/tigopesa",
-    download_url="https://github.com/Kalebu/tigopesa/archive/0.1.tar.gz",
+    download_url="https://github.com/Kalebu/tigopesa/archive/0.2.tar.gz",
     author="Jordan Kalebu",
     author_email="isaackeinstein@gmail.com",
     license="MIT",
